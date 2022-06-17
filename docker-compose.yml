@@ -38,7 +38,7 @@ services:
   adminer:
     image: adminer
     environment:
-      - ADMINER_DESIGN=pepa-linha-dark
+      - ADMINER_DESIGN=hydra
     ports:
       - 1000:8080
     networks:
