@@ -1,0 +1,33 @@
+version: '3.3'
+# 网络配置
+networks:
+  backend:
+    driver: ${NETWORKS_DRIVER}
+
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      - TZ=${TZ}
+      - MYSQL_USER=${MYSQL_USERNAME}                  # 设置 Mysql 用户名称
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}              # 设置 Mysql 用户密码
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}    # 设置 Mysql root 用户密码
+    volumes:
+      - ${MYSQL_DB}:/var/lib/mysql/
+    ports:
+      - ${MYSQL_PORT}:3306
+    networks:
+      - backend
+    restart: always
+  redis:
+    image: redis:latest
+    environment:
+      - TZ=${TZ}
+    privileged: true
+    volumes:
+      - ${REDIS_DB}:/data                 # 引用 .env 配置中 DATA_PATH_HOST 变量，将宿主机上存放 Redis 数据的目录挂载到容器中 /data 目录
+    ports:
+      - "${REDIS_PORT}:6379"                          # 设置容器6379端口映射指定宿主机端口
+    networks:
+      - backend
+    restart: always

@@ -1,0 +1,21 @@
+version: '3.3'
+# 网络配置
+networks:
+  backend:
+    driver: ${NETWORKS_DRIVER}
+
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      - TZ=${TZ}
+      - MYSQL_USER=${MYSQL_USERNAME}                  # 设置 Mysql 用户名称
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}              # 设置 Mysql 用户密码
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}    # 设置 Mysql root 用户密码
+    volumes:
+      - ${MYSQL_DB}:/var/lib/mysql/
+    ports:
+      - ${MYSQL_PORT}:3306
+    networks:
+      - backend
+    restart: always
